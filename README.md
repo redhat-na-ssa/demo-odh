@@ -124,7 +124,7 @@ grep '^+' api-diff.txt
 grep '^+' crd-diff.txt
 ```
 
-### ODH Uninstall
+### ODH Install / Uninstall
 
 ```
 # source for functions
