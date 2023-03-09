@@ -110,11 +110,13 @@ destroy_odh(){
 	done
 
 	# removing related crds - hope you weren't using grafana
+  # lets use a label selector to be safe :)
 	for crd in $(oc get crd -o name | egrep 'integreatly.org' | sed 's@custom.*k8s.io/@@')
 	do
 		echo "Searching for CR: $crd"
-		oc delete $crd --all -A
-		oc delete crd $crd
+		oc delete $crd --all -A \
+      -l opendatahub.io/component
+		# oc delete crd $crd
 	done
 
 	# what an uninstall does in the ocp console
