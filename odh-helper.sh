@@ -133,6 +133,6 @@ destroy_odh(){
 	oc delete ns anonymous system
 
 	echo "delete the project / namespace where you deployed your original kfdefs"
-	echo "oc delete <project>"
+	echo "oc delete project <project>"
 
 }
