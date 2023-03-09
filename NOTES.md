@@ -127,46 +127,10 @@ grep '^+' crd-diff.txt
 ### ODH Uninstall
 
 ```
-# run the uninstall wizard (may fail)
-# NOTE: crd named `odhquickstarts.console.openshift.io` does not follow the same domain `opendatahub.io`
-# NOTE: inconsistency in api use: `odhquickstarts console.openshift.io/v1 true OdhQuickStart`
-# NOTE: grafana dependencies not removed
+# source for functions
+source odh-helper.sh
 
-# removing finalizers for kfdefs
-# BUG: odh operator doesn't consistently remove kfdefs
-for kfdef in $(oc get kfdef -A -o name)
-  do oc patch $kfdef -n <namespace> --type merge -p '{"metadata": {"finalizers": null}}'
-done
-
-# removing related crds
-for crd in $(oc get crd -o name | egrep 'odh|kfdef' | sed 's@custom.*k8s.io/@@')
-do
-  echo "Searching for CR: $crd"
-  oc delete $crd --all -A
-  oc delete crd $crd
-done
-
-# removing related crds - hope you weren't using grafana
-for crd in $(oc get crd -o name | egrep 'integreatly.org' | sed 's@custom.*k8s.io/@@')
-do
-  echo "Searching for CR: $crd"
-  oc get $crd -A 2 > /dev/null
-  oc delete $crd --all -A
-  oc delete crd $crd
-done
-
-# what an uninstall does in the ocp console
-# delete csv,sub = uninstall
-# BUG: odh operator does not remove csv
-oc delete -n openshift-operators csv opendatahub-operator.v1.4.1
-oc delete -n openshift-operators sub opendatahub-operator
-
-# BUG: the odh operator created a redundant operator group in openshift-operators
-# kfctl.kubeflow.io/kfdef-instance: opendatahub.openshift-operators
-# oc get operatorgroup -l opendatahub.io/component -A
-oc -n openshift-operators delete operatorgroup opendatahub
-
-# INFO: additional namespaces created
-# oc get ns -l opendatahub.io/component
-oc delete ns anonymous system
+# choose function
+install_odh
+destroy_odh
 ```

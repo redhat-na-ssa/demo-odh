@@ -80,7 +80,7 @@ YAML
 }
 
 
-remove_odh(){
+destroy_odh(){
 	# run the uninstall wizard (may fail)
 	# NOTE: crd named `odhquickstarts.console.openshift.io` does not follow the same domain `opendatahub.io`
 	# NOTE: inconsistency in api use: `odhquickstarts console.openshift.io/v1 true OdhQuickStart`
@@ -136,5 +136,3 @@ remove_odh(){
 	echo "oc delete <project>"
 
 }
-
-# remove_odh
